@@ -12,6 +12,8 @@ class CameraSection extends StatefulWidget {
 }
 
 class _CameraSectionState extends State<CameraSection> {
+  int deteksi = 1; // Added variable deteksi with default value 0
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,16 +43,27 @@ class _CameraSectionState extends State<CameraSection> {
             Center(
               child: Column(
                 children: [
-                  Image.asset(
-                    'assets/Icon/danger.png',
-                    width: 50,
-                    height: 50,
-                  ),
-                  SizedBox(height: 10),
+                  if (deteksi == 0) // Added condition to show/hide the image
+                    Image.asset(
+                      'assets/Icon/danger.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                  if (deteksi == 1) // Added condition to show/hide the image
+                    Image.asset(
+                      'assets/Icon/save.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                  SizedBox(height: deteksi == 0 ? 10 : 20),
                   Text(
-                    'Mangga terdeteksi karbit!',
+                    deteksi == 0
+                        ? 'Mangga terdeteksi karbit!'
+                        : 'Mangga terdeteksi bukan karbit!', // Updated text
                     style: GoogleFonts.poppins(
-                        color: Colors.red,
+                        color: deteksi == 0
+                            ? Colors.red
+                            : Colors.green, // Updated color
                         fontSize: 16,
                         fontWeight: FontWeight.w600),
                   ),
@@ -58,12 +71,15 @@ class _CameraSectionState extends State<CameraSection> {
                   Container(
                     width: 280,
                     child: Text(
-                      'Waspadalah! Mangga ini terdeteksi mengandung karbit. Pilihlah buah yang lebih sehat untuk konsumsi Anda.',
-                      textAlign: TextAlign.justify,
+                      deteksi == 0
+                          ? 'Waspadalah! Mangga ini terdeteksi mengandung karbit. Pilihlah buah yang lebih sehat untuk konsumsi Anda.'
+                          : 'Mangga ini bukan karbit sehingga aman untuk dikonsumsi dan matang secara alami', // Updated text
+                      textAlign:
+                          deteksi == 0 ? TextAlign.justify : TextAlign.center,
                       style: secondaryTextStyle,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: deteksi == 0 ? 20 : 20),
                   Container(
                     height: 40,
                     decoration: BoxDecoration(
