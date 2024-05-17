@@ -1,23 +1,73 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
+
 import 'package:deteksi_buah_karbit/widgets/constant.dart';
 import 'package:deteksi_buah_karbit/widgets/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class CameraSection extends StatefulWidget {
-  const CameraSection({super.key});
+  const CameraSection({Key? key}) : super(key: key);
 
   @override
   State<CameraSection> createState() => _CameraSectionState();
 }
 
 class _CameraSectionState extends State<CameraSection> {
-  int deteksi = 1; // Added variable deteksi with default value 0
+  int deteksi = 1; // Added variable deteksi with default value 1
+  final controller = WebViewController()
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..loadRequest(Uri.parse('https://proxy65.rt3.io:31401/video_feed'));
+
+  get http => null;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start a timer to fetch the data every second
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      // Call your API here to get the updated value of deteksi
+      // Update the value of deteksi based on the API response
+      // For example, you can use setState to update the value and trigger a rebuild
+      fetchDeteksiValueFromAPI();
+    });
+  }
+
+  void fetchDeteksiValueFromAPI() async {
+    try {
+      // Create an HttpClient with a bad certificate
+      final httpClient = HttpClient()
+        ..badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+
+      // Make a GET request to the API endpoint
+      final uri = Uri.parse('https://proxy65.rt3.io:31401/predict');
+      final request = await httpClient.getUrl(uri);
+      final response = await request.close();
+
+      // Check if the request was successful
+      if (response.statusCode == 200) {
+        final responseBody = await response.transform(utf8.decoder).join();
+        final data = jsonDecode(responseBody);
+        setState(() {
+          deteksi = data['predict'];
+        });
+      } else {
+        print('Failed to fetch deteksi value: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Failed to fetch deteksi value: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(decoration: BoxDecoration(color: secondaryColor)),
+      body: WebViewWidget(controller: controller),
       bottomNavigationBar: Container(
         height: 380,
         decoration: BoxDecoration(
@@ -108,7 +158,7 @@ class _CameraSectionState extends State<CameraSection> {
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent),
                     ),
-                  )
+                  ),
                 ],
               ),
             )

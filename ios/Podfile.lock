@@ -1,22 +1,68 @@
 PODS:
+  - apivideo_live_stream (0.0.1):
+    - ApiVideoLiveStream (= 1.4.1)
+    - Flutter
+  - ApiVideoLiveStream (1.4.1):
+    - HaishinKit (= 1.7.3)
   - Flutter (1.0.0)
+  - flutter_webview_plugin (0.0.1):
+    - Flutter
+  - HaishinKit (1.7.3):
+    - Logboard (~> 2.4.1)
+  - Logboard (2.4.2)
+  - native_device_orientation (0.0.1):
+    - Flutter
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+  - video_player_avfoundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - webview_flutter_wkwebview (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
+  - apivideo_live_stream (from `.symlinks/plugins/apivideo_live_stream/ios`)
   - Flutter (from `Flutter`)
+  - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
+  - native_device_orientation (from `.symlinks/plugins/native_device_orientation/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
+
+SPEC REPOS:
+  trunk:
+    - ApiVideoLiveStream
+    - HaishinKit
+    - Logboard
 
 EXTERNAL SOURCES:
+  apivideo_live_stream:
+    :path: ".symlinks/plugins/apivideo_live_stream/ios"
   Flutter:
     :path: Flutter
+  flutter_webview_plugin:
+    :path: ".symlinks/plugins/flutter_webview_plugin/ios"
+  native_device_orientation:
+    :path: ".symlinks/plugins/native_device_orientation/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/darwin"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/ios"
 
 SPEC CHECKSUMS:
+  apivideo_live_stream: a58109c8de3dde8f5ca32991a37e07413ba95a04
+  ApiVideoLiveStream: 8f9dce7f6d15d5e4bb3c7a25e406bf2a36337a5a
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
+  HaishinKit: 326e27c4d06427ba53bffc68e516a92033293051
+  Logboard: 759d82599c439945d430d5a0958455b5a1974a0c
+  native_device_orientation: 3b4cfc9565a7b879cc4fde282b3e27745e852d0d
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
+  webview_flutter_wkwebview: be0f0d33777f1bfd0c9fdcb594786704dbf65f36
 
 PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
