@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
-import 'dart:math';
-
+import 'dart:io' as io; // Namespace for dart:io
 import 'package:deteksi_buah_karbit/widgets/constant.dart';
 import 'package:deteksi_buah_karbit/widgets/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class CameraSection extends StatefulWidget {
   const CameraSection({Key? key}) : super(key: key);
@@ -18,21 +15,14 @@ class CameraSection extends StatefulWidget {
 }
 
 class _CameraSectionState extends State<CameraSection> {
-  int deteksi = 1; // Added variable deteksi with default value 1
-  final controller = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..loadRequest(Uri.parse('https://proxy65.rt3.io:31401/video_feed'));
-
-  get http => null;
+  int deteksi = 1;
+  late InAppWebViewController webViewController;
 
   @override
   void initState() {
     super.initState();
     // Start a timer to fetch the data every second
     Timer.periodic(Duration(seconds: 1), (timer) {
-      // Call your API here to get the updated value of deteksi
-      // Update the value of deteksi based on the API response
-      // For example, you can use setState to update the value and trigger a rebuild
       fetchDeteksiValueFromAPI();
     });
   }
@@ -40,12 +30,13 @@ class _CameraSectionState extends State<CameraSection> {
   void fetchDeteksiValueFromAPI() async {
     try {
       // Create an HttpClient with a bad certificate
-      final httpClient = HttpClient()
+      final httpClient = io.HttpClient()
         ..badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
+            ((io.X509Certificate cert, String host, int port) => true) as bool
+                Function(io.X509Certificate, String, int)?;
 
       // Make a GET request to the API endpoint
-      final uri = Uri.parse('https://proxy65.rt3.io:31401/predict');
+      final uri = Uri.parse('https://proxy66.rt3.io:33911/predict');
       final request = await httpClient.getUrl(uri);
       final response = await request.close();
 
@@ -67,7 +58,33 @@ class _CameraSectionState extends State<CameraSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WebViewWidget(controller: controller),
+      body: InAppWebView(
+        initialUrlRequest: URLRequest(
+          url: WebUri('https://proxy66.rt3.io:33911/video_feed'),
+        ),
+        initialOptions: InAppWebViewGroupOptions(
+          crossPlatform: InAppWebViewOptions(
+            javaScriptEnabled: true,
+            useOnDownloadStart: true,
+            mediaPlaybackRequiresUserGesture: false,
+          ),
+          android: AndroidInAppWebViewOptions(
+            allowFileAccess: true,
+            allowContentAccess: true,
+          ),
+          ios: IOSInAppWebViewOptions(
+            allowsInlineMediaPlayback: true,
+          ),
+        ),
+        onWebViewCreated: (controller) {
+          webViewController = controller;
+        },
+        onReceivedServerTrustAuthRequest: (controller, challenge) async {
+          //Do some checks here to decide if CANCELS or PROCEEDS
+          return ServerTrustAuthResponse(
+              action: ServerTrustAuthResponseAction.PROCEED);
+        },
+      ),
       bottomNavigationBar: Container(
         height: 380,
         decoration: BoxDecoration(
@@ -93,13 +110,13 @@ class _CameraSectionState extends State<CameraSection> {
             Center(
               child: Column(
                 children: [
-                  if (deteksi == 0) // Added condition to show/hide the image
+                  if (deteksi == 0)
                     Image.asset(
                       'assets/Icon/danger.png',
                       width: 50,
                       height: 50,
                     ),
-                  if (deteksi == 1) // Added condition to show/hide the image
+                  if (deteksi == 1)
                     Image.asset(
                       'assets/Icon/save.png',
                       width: 50,
@@ -109,11 +126,9 @@ class _CameraSectionState extends State<CameraSection> {
                   Text(
                     deteksi == 0
                         ? 'Mangga terdeteksi karbit!'
-                        : 'Mangga terdeteksi bukan karbit!', // Updated text
+                        : 'Mangga terdeteksi bukan karbit!',
                     style: GoogleFonts.poppins(
-                        color: deteksi == 0
-                            ? Colors.red
-                            : Colors.green, // Updated color
+                        color: deteksi == 0 ? Colors.red : Colors.green,
                         fontSize: 16,
                         fontWeight: FontWeight.w600),
                   ),
@@ -123,7 +138,7 @@ class _CameraSectionState extends State<CameraSection> {
                     child: Text(
                       deteksi == 0
                           ? 'Waspadalah! Mangga ini terdeteksi mengandung karbit. Pilihlah buah yang lebih sehat untuk konsumsi Anda.'
-                          : 'Mangga ini bukan karbit sehingga aman untuk dikonsumsi dan matang secara alami', // Updated text
+                          : 'Mangga ini bukan karbit sehingga aman untuk dikonsumsi dan matang secara alami',
                       textAlign:
                           deteksi == 0 ? TextAlign.justify : TextAlign.center,
                       style: secondaryTextStyle,

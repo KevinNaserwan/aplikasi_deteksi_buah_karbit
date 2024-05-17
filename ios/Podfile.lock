@@ -5,6 +5,13 @@ PODS:
   - ApiVideoLiveStream (1.4.1):
     - HaishinKit (= 1.7.3)
   - Flutter (1.0.0)
+  - flutter_inappwebview_ios (0.0.1):
+    - Flutter
+    - flutter_inappwebview_ios/Core (= 0.0.1)
+    - OrderedSet (~> 5.0)
+  - flutter_inappwebview_ios/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 5.0)
   - flutter_webview_plugin (0.0.1):
     - Flutter
   - HaishinKit (1.7.3):
@@ -12,6 +19,7 @@ PODS:
   - Logboard (2.4.2)
   - native_device_orientation (0.0.1):
     - Flutter
+  - OrderedSet (5.0.0)
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -24,6 +32,7 @@ PODS:
 DEPENDENCIES:
   - apivideo_live_stream (from `.symlinks/plugins/apivideo_live_stream/ios`)
   - Flutter (from `Flutter`)
+  - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - flutter_webview_plugin (from `.symlinks/plugins/flutter_webview_plugin/ios`)
   - native_device_orientation (from `.symlinks/plugins/native_device_orientation/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -35,12 +44,15 @@ SPEC REPOS:
     - ApiVideoLiveStream
     - HaishinKit
     - Logboard
+    - OrderedSet
 
 EXTERNAL SOURCES:
   apivideo_live_stream:
     :path: ".symlinks/plugins/apivideo_live_stream/ios"
   Flutter:
     :path: Flutter
+  flutter_inappwebview_ios:
+    :path: ".symlinks/plugins/flutter_inappwebview_ios/ios"
   flutter_webview_plugin:
     :path: ".symlinks/plugins/flutter_webview_plugin/ios"
   native_device_orientation:
@@ -56,10 +68,12 @@ SPEC CHECKSUMS:
   apivideo_live_stream: a58109c8de3dde8f5ca32991a37e07413ba95a04
   ApiVideoLiveStream: 8f9dce7f6d15d5e4bb3c7a25e406bf2a36337a5a
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_inappwebview_ios: 97215cf7d4677db55df76782dbd2930c5e1c1ea0
   flutter_webview_plugin: ed9e8a6a96baf0c867e90e1bce2673913eeac694
   HaishinKit: 326e27c4d06427ba53bffc68e516a92033293051
   Logboard: 759d82599c439945d430d5a0958455b5a1974a0c
   native_device_orientation: 3b4cfc9565a7b879cc4fde282b3e27745e852d0d
+  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
   webview_flutter_wkwebview: be0f0d33777f1bfd0c9fdcb594786704dbf65f36
