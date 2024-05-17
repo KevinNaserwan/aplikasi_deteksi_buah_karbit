@@ -17,17 +17,58 @@ class CameraSection extends StatefulWidget {
 class _CameraSectionState extends State<CameraSection> {
   int deteksi = 1;
   late InAppWebViewController webViewController;
+  String apiUrl = '';
 
   @override
   void initState() {
     super.initState();
-    // Start a timer to fetch the data every second
-    Timer.periodic(Duration(seconds: 1), (timer) {
-      fetchDeteksiValueFromAPI();
+    // Show dialog to get the URL from the user
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showUrlInputDialog();
     });
   }
 
+  void _showUrlInputDialog() {
+    TextEditingController urlController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Enter API URL'),
+          content: TextField(
+            controller: urlController,
+            decoration: InputDecoration(hintText: 'https://example.com'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  apiUrl = urlController.text;
+                  // Start a timer to fetch the data every second
+                  Timer.periodic(Duration(seconds: 1), (timer) {
+                    fetchDeteksiValueFromAPI();
+                  });
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void fetchDeteksiValueFromAPI() async {
+    if (apiUrl.isEmpty) return;
+
     try {
       // Create an HttpClient with a bad certificate
       final httpClient = io.HttpClient()
@@ -36,7 +77,7 @@ class _CameraSectionState extends State<CameraSection> {
                 Function(io.X509Certificate, String, int)?;
 
       // Make a GET request to the API endpoint
-      final uri = Uri.parse('https://proxy66.rt3.io:33911/predict');
+      final uri = Uri.parse('$apiUrl/predict');
       final request = await httpClient.getUrl(uri);
       final response = await request.close();
 
@@ -58,33 +99,35 @@ class _CameraSectionState extends State<CameraSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: InAppWebView(
-        initialUrlRequest: URLRequest(
-          url: WebUri('https://proxy66.rt3.io:33911/video_feed'),
-        ),
-        initialOptions: InAppWebViewGroupOptions(
-          crossPlatform: InAppWebViewOptions(
-            javaScriptEnabled: true,
-            useOnDownloadStart: true,
-            mediaPlaybackRequiresUserGesture: false,
-          ),
-          android: AndroidInAppWebViewOptions(
-            allowFileAccess: true,
-            allowContentAccess: true,
-          ),
-          ios: IOSInAppWebViewOptions(
-            allowsInlineMediaPlayback: true,
-          ),
-        ),
-        onWebViewCreated: (controller) {
-          webViewController = controller;
-        },
-        onReceivedServerTrustAuthRequest: (controller, challenge) async {
-          //Do some checks here to decide if CANCELS or PROCEEDS
-          return ServerTrustAuthResponse(
-              action: ServerTrustAuthResponseAction.PROCEED);
-        },
-      ),
+      body: apiUrl.isEmpty
+          ? Center(child: Text('Please enter the API URL'))
+          : InAppWebView(
+              initialUrlRequest: URLRequest(
+                url: WebUri('$apiUrl/video_feed'),
+              ),
+              initialOptions: InAppWebViewGroupOptions(
+                crossPlatform: InAppWebViewOptions(
+                  javaScriptEnabled: true,
+                  useOnDownloadStart: true,
+                  mediaPlaybackRequiresUserGesture: false,
+                ),
+                android: AndroidInAppWebViewOptions(
+                  allowFileAccess: true,
+                  allowContentAccess: true,
+                ),
+                ios: IOSInAppWebViewOptions(
+                  allowsInlineMediaPlayback: true,
+                ),
+              ),
+              onWebViewCreated: (controller) {
+                webViewController = controller;
+              },
+              onReceivedServerTrustAuthRequest: (controller, challenge) async {
+                // Do some checks here to decide if CANCELS or PROCEEDS
+                return ServerTrustAuthResponse(
+                    action: ServerTrustAuthResponseAction.PROCEED);
+              },
+            ),
       bottomNavigationBar: Container(
         height: 380,
         decoration: BoxDecoration(
