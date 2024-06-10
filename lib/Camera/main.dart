@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io' as io; // Namespace for dart:io
 import 'package:deteksi_buah_karbit/widgets/constant.dart';
@@ -23,48 +22,48 @@ class _CameraSectionState extends State<CameraSection> {
   void initState() {
     super.initState();
     // Show dialog to get the URL from the user
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showUrlInputDialog();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _showUrlInputDialog();
+    // });
   }
 
-  void _showUrlInputDialog() {
-    TextEditingController urlController = TextEditingController();
+  // void _showUrlInputDialog() {
+  //   TextEditingController urlController = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Enter API URL'),
-          content: TextField(
-            controller: urlController,
-            decoration: InputDecoration(hintText: 'https://example.com'),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() {
-                  apiUrl = urlController.text;
-                  // Start a timer to fetch the data every second
-                  Timer.periodic(Duration(seconds: 1), (timer) {
-                    fetchDeteksiValueFromAPI();
-                  });
-                });
-                Navigator.of(context).pop();
-              },
-              child: Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text('Enter API URL'),
+  //         content: TextField(
+  //           controller: urlController,
+  //           decoration: InputDecoration(hintText: 'https://example.com'),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('Cancel'),
+  //           ),
+  //           TextButton(
+  //             onPressed: () {
+  //               setState(() {
+  //                 apiUrl = urlController.text;
+  //                 // Start a timer to fetch the data every second
+  //                 Timer.periodic(Duration(seconds: 1), (timer) {
+  //                   fetchDeteksiValueFromAPI();
+  //                 });
+  //               });
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: Text('OK'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   void fetchDeteksiValueFromAPI() async {
     if (apiUrl.isEmpty) return;
@@ -99,43 +98,45 @@ class _CameraSectionState extends State<CameraSection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: apiUrl.isEmpty
-          ? Center(child: Text('Please enter the API URL'))
-          : InAppWebView(
-              initialUrlRequest: URLRequest(
-                url: WebUri('$apiUrl/video_feed'),
-              ),
-              initialOptions: InAppWebViewGroupOptions(
-                crossPlatform: InAppWebViewOptions(
-                  javaScriptEnabled: true,
-                  useOnDownloadStart: true,
-                  mediaPlaybackRequiresUserGesture: false,
-                ),
-                android: AndroidInAppWebViewOptions(
-                  allowFileAccess: true,
-                  allowContentAccess: true,
-                ),
-                ios: IOSInAppWebViewOptions(
-                  allowsInlineMediaPlayback: true,
-                ),
-              ),
-              onWebViewCreated: (controller) {
-                webViewController = controller;
-              },
-              onReceivedServerTrustAuthRequest: (controller, challenge) async {
-                // Do some checks here to decide if CANCELS or PROCEEDS
-                return ServerTrustAuthResponse(
-                    action: ServerTrustAuthResponseAction.PROCEED);
-              },
-            ),
+      // body: apiUrl.isEmpty
+      //     ? Center(child: Text('Please enter the API URL'))
+      //     : InAppWebView(
+      //         initialUrlRequest: URLRequest(
+      //           url: WebUri('$apiUrl/video_feed'),
+      //         ),
+      //         initialOptions: InAppWebViewGroupOptions(
+      //           crossPlatform: InAppWebViewOptions(
+      //             javaScriptEnabled: true,
+      //             useOnDownloadStart: true,
+      //             mediaPlaybackRequiresUserGesture: false,
+      //           ),
+      //           android: AndroidInAppWebViewOptions(
+      //             allowFileAccess: true,
+      //             allowContentAccess: true,
+      //           ),
+      //           ios: IOSInAppWebViewOptions(
+      //             allowsInlineMediaPlayback: true,
+      //           ),
+      //         ),
+      //         onWebViewCreated: (controller) {
+      //           webViewController = controller;
+      //         },
+      //         onReceivedServerTrustAuthRequest: (controller, challenge) async {
+      //           // Do some checks here to decide if CANCELS or PROCEEDS
+      //           return ServerTrustAuthResponse(
+      //               action: ServerTrustAuthResponseAction.PROCEED);
+      //         },
+      //       ),
+      body: Container(),
       bottomNavigationBar: Container(
-        height: 380,
+        height: double.infinity,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(50), topRight: Radius.circular(50))),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 30),
             Padding(

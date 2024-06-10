@@ -2,7 +2,6 @@ import 'package:deteksi_buah_karbit/Camera/main.dart';
 import 'package:deteksi_buah_karbit/widgets/constant.dart';
 import 'package:deteksi_buah_karbit/widgets/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:deteksi_buah_karbit/widgets/size_config.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatelessWidget {
