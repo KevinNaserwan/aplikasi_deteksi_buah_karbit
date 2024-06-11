@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io' as io; // Namespace for dart:io
 import 'package:deteksi_buah_karbit/widgets/constant.dart';
@@ -22,48 +23,48 @@ class _CameraSectionState extends State<CameraSection> {
   void initState() {
     super.initState();
     // Show dialog to get the URL from the user
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _showUrlInputDialog();
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showUrlInputDialog();
+    });
   }
 
-  // void _showUrlInputDialog() {
-  //   TextEditingController urlController = TextEditingController();
+  void _showUrlInputDialog() {
+    TextEditingController urlController = TextEditingController();
 
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: Text('Enter API URL'),
-  //         content: TextField(
-  //           controller: urlController,
-  //           decoration: InputDecoration(hintText: 'https://example.com'),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: Text('Cancel'),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               setState(() {
-  //                 apiUrl = urlController.text;
-  //                 // Start a timer to fetch the data every second
-  //                 Timer.periodic(Duration(seconds: 1), (timer) {
-  //                   fetchDeteksiValueFromAPI();
-  //                 });
-  //               });
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: Text('OK'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Enter API URL'),
+          content: TextField(
+            controller: urlController,
+            decoration: InputDecoration(hintText: 'https://example.com'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  apiUrl = urlController.text;
+                  // Start a timer to fetch the data every second
+                  Timer.periodic(Duration(seconds: 1), (timer) {
+                    fetchDeteksiValueFromAPI();
+                  });
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void fetchDeteksiValueFromAPI() async {
     if (apiUrl.isEmpty) return;
