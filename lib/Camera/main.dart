@@ -15,7 +15,7 @@ class CameraSection extends StatefulWidget {
 }
 
 class _CameraSectionState extends State<CameraSection> {
-  int deteksi = 1;
+  int deteksi = 2;
   late InAppWebViewController webViewController;
   String apiUrl = '';
 
@@ -167,13 +167,19 @@ class _CameraSectionState extends State<CameraSection> {
                       width: 50,
                       height: 50,
                     ),
-                  SizedBox(height: deteksi == 0 ? 10 : 20),
+                  if (deteksi == 2) SizedBox(height: deteksi == 0 ? 10 : 20),
                   Text(
                     deteksi == 0
                         ? 'Mangga terdeteksi karbit!'
-                        : 'Mangga terdeteksi bukan karbit!',
+                        : deteksi == 1
+                            ? 'Mangga terdeteksi bukan karbit!'
+                            : '',
                     style: GoogleFonts.poppins(
-                        color: deteksi == 0 ? Colors.red : Colors.green,
+                        color: deteksi == 0
+                            ? Colors.red
+                            : deteksi == 1
+                                ? Colors.green
+                                : Colors.black,
                         fontSize: 16,
                         fontWeight: FontWeight.w600),
                   ),
@@ -183,13 +189,20 @@ class _CameraSectionState extends State<CameraSection> {
                     child: Text(
                       deteksi == 0
                           ? 'Waspadalah! Mangga ini terdeteksi mengandung karbit. Pilihlah buah yang lebih sehat untuk konsumsi Anda.'
-                          : 'Mangga ini bukan karbit sehingga aman untuk dikonsumsi dan matang secara alami',
+                          : deteksi == 1
+                              ? 'Mangga ini bukan karbit sehingga aman untuk dikonsumsi dan matang secara alami'
+                              : 'Silakan arahkan kamera ke buah mangga',
                       textAlign:
                           deteksi == 0 ? TextAlign.justify : TextAlign.center,
                       style: secondaryTextStyle,
                     ),
                   ),
-                  SizedBox(height: deteksi == 0 ? 20 : 20),
+                  SizedBox(
+                      height: deteksi == 0
+                          ? 20
+                          : deteksi == 1
+                              ? 20
+                              : 50),
                   Container(
                     height: 40,
                     decoration: BoxDecoration(
