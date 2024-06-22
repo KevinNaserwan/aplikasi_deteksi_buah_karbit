@@ -86,7 +86,7 @@ class _CameraSectionState extends State<CameraSection> {
         final responseBody = await response.transform(utf8.decoder).join();
         final data = jsonDecode(responseBody);
         setState(() {
-          deteksi = data['predict'];
+          deteksi = int.parse(data['predict']);
         });
       } else {
         print('Failed to fetch deteksi value: ${response.statusCode}');
@@ -155,13 +155,13 @@ class _CameraSectionState extends State<CameraSection> {
             Center(
               child: Column(
                 children: [
-                  if (deteksi == 0)
+                  if (deteksi == 1)
                     Image.asset(
                       'assets/Icon/danger.png',
                       width: 50,
                       height: 50,
                     ),
-                  if (deteksi == 1)
+                  if (deteksi == 0)
                     Image.asset(
                       'assets/Icon/save.png',
                       width: 50,
@@ -169,15 +169,15 @@ class _CameraSectionState extends State<CameraSection> {
                     ),
                   if (deteksi == 2) SizedBox(height: deteksi == 0 ? 10 : 20),
                   Text(
-                    deteksi == 0
+                    deteksi == 1
                         ? 'Mangga terdeteksi karbit!'
-                        : deteksi == 1
+                        : deteksi == 0
                             ? 'Mangga terdeteksi bukan karbit!'
                             : '',
                     style: GoogleFonts.poppins(
-                        color: deteksi == 0
+                        color: deteksi == 1
                             ? Colors.red
-                            : deteksi == 1
+                            : deteksi == 0
                                 ? Colors.green
                                 : Colors.black,
                         fontSize: 16,
@@ -187,9 +187,9 @@ class _CameraSectionState extends State<CameraSection> {
                   Container(
                     width: 280,
                     child: Text(
-                      deteksi == 0
+                      deteksi == 1
                           ? 'Waspadalah! Mangga ini terdeteksi mengandung karbit. Pilihlah buah yang lebih sehat untuk konsumsi Anda.'
-                          : deteksi == 1
+                          : deteksi == 0
                               ? 'Mangga ini bukan karbit sehingga aman untuk dikonsumsi dan matang secara alami'
                               : 'Silakan arahkan kamera ke buah mangga',
                       textAlign:
@@ -198,9 +198,9 @@ class _CameraSectionState extends State<CameraSection> {
                     ),
                   ),
                   SizedBox(
-                      height: deteksi == 0
+                      height: deteksi == 1
                           ? 20
-                          : deteksi == 1
+                          : deteksi == 0
                               ? 20
                               : 50),
                   Container(
