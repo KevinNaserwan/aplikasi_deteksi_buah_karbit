@@ -167,7 +167,15 @@ class _CameraSectionState extends State<CameraSection> {
                       width: 50,
                       height: 50,
                     ),
-                  if (deteksi == 2) SizedBox(height: deteksi == 0 ? 10 : 20),
+                  if (deteksi == 2)
+                    Text(
+                      'Mangga tidak terdeteksi',
+                      style: GoogleFonts.poppins(
+                          color: primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600),
+                    ),
+                  SizedBox(height: 10),
                   Text(
                     deteksi == 1
                         ? 'Mangga terdeteksi karbit!'
@@ -183,7 +191,7 @@ class _CameraSectionState extends State<CameraSection> {
                         fontSize: 16,
                         fontWeight: FontWeight.w600),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: deteksi == 2 ? 0 : 20),
                   Container(
                     width: 280,
                     child: Text(
